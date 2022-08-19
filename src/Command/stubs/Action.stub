@@ -16,8 +16,8 @@ use Hyperf\HttpServer\Annotation\RequestMapping;
 
 /**
  * #COMMENT#
- * @Controller()
  */
+#[Controller]
 class #ACTION# extends AbstractAction
 {
     /**

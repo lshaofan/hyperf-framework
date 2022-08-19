@@ -6,7 +6,7 @@ declare(strict_types=1);
  *
  * @link     https://www.greenbirds.cn
  * @document https://greenbirds.cn
- * @contact  liushaofan@greenbirds.cn
+ * @contact  liushaofan@.cn
  */
 namespace Gb\Framework\Command;
 
@@ -27,7 +27,7 @@ class ActionCommand extends HyperfCommand
     {
         $this->container = $container;
 
-        parent::__construct('mcGen:action');
+        parent::__construct('gbGen:action');
     }
 
     public function configure()

@@ -15,7 +15,6 @@ use Gb\Framework\Exception\Handler\CommonExceptionHandler;
 use Gb\Framework\Exception\Handler\GuzzleRequestExceptionHandler;
 use Gb\Framework\Exception\Handler\ValidationExceptionHandler;
 use Gb\Framework\Middleware\CorsMiddleware;
-use Gb\Framework\Middleware\ResponseMiddleware;
 
 class ConfigProvider
 {
@@ -39,7 +38,7 @@ class ConfigProvider
             'middlewares' => [
                 'http' => [
                     CorsMiddleware::class,
-                    ResponseMiddleware::class,
+//                    ResponseMiddleware::class,
                 ],
             ],
             'commands' => [

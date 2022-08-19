@@ -2,22 +2,14 @@
 
 declare(strict_types=1);
 /**
- * This file is part of 绿鸟科技.
+ * This file is part of Hyperf.
  *
- * @link     https://www.greenbirds.cn
- * @document https://greenbirds.cn
- * @contact  liushaofan@greenbirds.cn
+ * @link     https://www.hyperf.io
+ * @document https://hyperf.wiki
+ * @contact  group@hyperf.io
+ * @license  https://github.com/hyperf/hyperf/blob/master/LICENSE
  */
 return [
-    // Gb\Framework\Middleware\JwtAuthMiddleware jwt路由验证白名单
-    'auth_white_routes' => [
-        '/user/auth', '/weWork/callback',
-    ],
-
-    // Gb\Framework\Middleware\ResponseMiddleware 原生响应格式的路由
-    'response_raw_routes' => [
-        '/weWork/callback',
-    ],
 
     'wework' => [
         'config' => [
