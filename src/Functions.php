@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 /**
- * This file is part of Gb.
- * @link     https://mo.chat
- * @document https://Gb.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/Gb-cloud/Gb/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
 if (! function_exists('readFileName')) {
     /**
@@ -37,7 +37,7 @@ if (! function_exists('responseDataFormat')) {
     {
         return [
             'code' => $code,
-            'msg'  => $message,
+            'msg' => $message,
             'data' => $data,
         ];
     }

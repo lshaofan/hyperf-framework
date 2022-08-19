@@ -19,7 +19,7 @@ use Psr\Container\ContainerInterface;
 class ServiceInterfaceCommand extends HyperfCommand
 {
     use CommandTrait;
-    
+
     protected ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)

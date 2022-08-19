@@ -38,7 +38,7 @@ class ConfigProvider
             'middlewares' => [
                 'http' => [
                     CorsMiddleware::class,
-//                    ResponseMiddleware::class,
+                    //                    ResponseMiddleware::class,
                 ],
             ],
             'commands' => [

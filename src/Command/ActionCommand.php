@@ -6,7 +6,7 @@ declare(strict_types=1);
  *
  * @link     https://www.greenbirds.cn
  * @document https://greenbirds.cn
- * @contact  liushaofan@.cn
+ * @contact  liushaofan@greenbirds.cn
  */
 namespace Gb\Framework\Command;
 
@@ -20,7 +20,7 @@ use Symfony\Component\Console\Input\InputOption;
 class ActionCommand extends HyperfCommand
 {
     use CommandTrait;
-    
+
     protected ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)

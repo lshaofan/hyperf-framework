@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 /**
- * This file is part of Gb.
- * @link     https://mo.chat
- * @document https://Gb.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/Gb-cloud/Gb/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
 namespace Gb\Framework\WeWork;
 
-use EasyWeChat\Work\Application;
 use EasyWeChat\OpenWork\Application as OpenWorkApplication;
-use Hyperf\Contract\ConfigInterface;
+use EasyWeChat\Work\Application;
 use Gb\Framework\Constants\ErrorCode;
 use Gb\Framework\Exception\CommonException;
 use Gb\Framework\Provider\WeWork\AbstractProvider;
+use Hyperf\Contract\ConfigInterface;
 
 /**
  * @method Application app(array $config = []) 获取wework.app
@@ -61,7 +61,7 @@ class WeWork
             $config['name'],
             [
                 'config' => $this->config,
-                'name'   => $name,
+                'name' => $name,
             ]
         );
     }

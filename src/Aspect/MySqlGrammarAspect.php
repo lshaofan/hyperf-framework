@@ -14,7 +14,6 @@ use Hyperf\Di\Annotation\Aspect;
 use Hyperf\Di\Aop\AbstractAspect;
 use Hyperf\Di\Aop\ProceedingJoinPoint;
 
-
 #[Aspect]
 class MySqlGrammarAspect extends AbstractAspect
 {

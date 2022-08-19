@@ -24,15 +24,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractProvider
 {
-
     protected RequestInterface $request;
-
 
     protected mixed $wxConfig;
 
-
     protected mixed $service;
-
 
     protected string $name;
 

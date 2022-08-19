@@ -23,14 +23,12 @@ use Throwable;
 
 class AuthExceptionHandler extends ExceptionHandler
 {
-
     protected StdoutLoggerInterface $logger;
 
     public function __construct(StdoutLoggerInterface $logger)
     {
         $this->logger = $logger;
     }
-
 
     public function handle(Throwable $throwable, \Psr\Http\Message\ResponseInterface $response): mixed
     {

@@ -22,7 +22,6 @@ use Throwable;
  */
 class CommonExceptionHandler extends ExceptionHandler
 {
-
     protected StdoutLoggerInterface $logger;
 
     public function __construct(StdoutLoggerInterface $logger)
