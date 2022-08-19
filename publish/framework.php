@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
- * @link     https://mo.chat
- * @document https://mochat.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
 return [
-    // MoChat\Framework\Middleware\JwtAuthMiddleware jwt路由验证白名单
+    // Gb\Framework\Middleware\JwtAuthMiddleware jwt路由验证白名单
     'auth_white_routes' => [
         '/user/auth', '/weWork/callback',
     ],
 
-    // MoChat\Framework\Middleware\ResponseMiddleware 原生响应格式的路由
+    // Gb\Framework\Middleware\ResponseMiddleware 原生响应格式的路由
     'response_raw_routes' => [
         '/weWork/callback',
     ],
@@ -26,7 +26,7 @@ return [
 
             'log' => [
                 'level' => 'debug',
-                'file'  => BASE_PATH . '/runtime/logs/wechat.log',
+                'file' => BASE_PATH . '/runtime/logs/wechat.log',
             ],
         ],
         'default' => [
@@ -34,20 +34,20 @@ return [
         ],
         'providers' => [
             'app' => [
-                'name'    => \MoChat\Framework\Provider\WeWork\AppProvider::class,
-                'service' => App\Model\Corp::class, //  需要实现 MoChat\Framework\Contract\WeWork\AppConfigurable 接口
+                //                'name'    => \Gb\Framework\Provider\WeWork\AppProvider::class,
+                //                'service' => App\Model\Corp::class, //  需要实现 Gb\Framework\Contract\WeWork\AppConfigurable 接口
             ],
             'user' => [
-                'name'    => \MoChat\Framework\Provider\WeWork\UserProvider::class,
-                'service' => App\Model\Corp::class, //  需要实现 MoChat\Framework\Contract\WeWork\UserConfigurable 接口
+                //                'name'    => \Gb\Framework\Provider\WeWork\UserProvider::class,
+                //                'service' => App\Model\Corp::class, //  需要实现 Gb\Framework\Contract\WeWork\UserConfigurable 接口
             ],
             'externalContact' => [
-                'name'    => \MoChat\Framework\Provider\WeWork\ExternalContactProvider::class,
-                'service' => App\Model\Corp::class, //  需要实现 MoChat\Framework\Contract\WeWork\ExternalContactConfigurable 接口
+                //                'name'    => \Gb\Framework\Provider\WeWork\ExternalContactProvider::class,
+                //                'service' => App\Model\Corp::class, //  需要实现 Gb\Framework\Contract\WeWork\ExternalContactConfigurable 接口
             ],
             'agent' => [
-                'name'    => \MoChat\Framework\Provider\WeWork\AgentProvider::class,
-                'service' => App\Model\Corp::class, //  需要实现 MoChat\Framework\Contract\WeWork\AgentConfigurable 接口
+                //                'name'    => \Gb\Framework\Provider\WeWork\AgentProvider::class,
+                //                'service' => App\Model\Corp::class, //  需要实现 Gb\Framework\Contract\WeWork\AgentConfigurable 接口
             ],
         ],
     ],

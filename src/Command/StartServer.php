@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
- * @link     https://mo.chat
- * @document https://mochat.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
-namespace MoChat\Framework\Command;
+namespace Gb\Framework\Command;
 
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\StdoutLoggerInterface;
@@ -16,48 +16,28 @@ use Hyperf\Server\ServerFactory;
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Swoole\Runtime;
 use Swoole\Process;
+use Swoole\Runtime;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-/**
- * @\Hyperf\Command\Annotation\Command()
- */
+#[\Hyperf\Command\Annotation\Command]
 class StartServer extends Command
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
 
-    /**
-     * @var SymfonyStyle
-     */
-    private $io;
+    private SymfonyStyle $io;
 
-    /**
-     * @var int
-     */
-    private $interval;
+    private int $interval;
 
-    /**
-     * @var bool
-     */
-    private $clear;
+    private bool $clear;
 
-    /**
-     * @var bool
-     */
-    private $daemonize;
+    private bool $daemonize;
 
-    /**
-     * @var string
-     */
-    private $php;
+    private string $php;
 
     public function __construct(ContainerInterface $container)
     {
@@ -68,8 +48,8 @@ class StartServer extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Start mochat servers.')
-            ->addOption('daemonize', 'd', InputOption::VALUE_OPTIONAL, 'mochat server daemonize', false)
+            ->setDescription('Start Gb servers.')
+            ->addOption('daemonize', 'd', InputOption::VALUE_OPTIONAL, 'Gb server daemonize', false)
             ->addOption('clear', 'c', InputOption::VALUE_OPTIONAL, 'clear runtime container', false);
     }
 
@@ -84,7 +64,6 @@ class StartServer extends Command
         $this->clear = ($input->getOption('clear') !== false);
 
         $this->daemonize = ($input->getOption('daemonize') !== false);
-
 
         if ($this->clear) {
             $this->clearRuntimeContainer();
@@ -120,12 +99,11 @@ class StartServer extends Command
          */
         $useShortname = ini_get_all('swoole')['swoole.use_shortname']['local_value'];
         $useShortname = strtolower(trim(str_replace('0', '', $useShortname)));
-        if (!in_array($useShortname, ['', 'off', 'false'], true)) {
+        if (! in_array($useShortname, ['', 'off', 'false'], true)) {
             $output->writeln('<error>ERROR</error> Swoole short name have to disable before start server, please set swoole.use_shortname = off into your php.ini.');
             exit(0);
         }
     }
-
 
     private function clearRuntimeContainer()
     {
@@ -139,13 +117,13 @@ class StartServer extends Command
             ->setLogger($this->container->get(StdoutLoggerInterface::class));
 
         $serverConfig = $this->container->get(ConfigInterface::class)->get('server', []);
-        if (!$serverConfig) {
+        if (! $serverConfig) {
             throw new InvalidArgumentException('At least one server should be defined.');
         }
 
         if ($this->daemonize) {
             $serverConfig['settings']['daemonize'] = 1;
-            $this->io->success('mochat server start success.');
+            $this->io->success('Gb server start success.');
         }
 
         Runtime::enableCoroutine(true, swoole_hook_flags());
@@ -160,9 +138,9 @@ class StartServer extends Command
         $pidFile = BASE_PATH . '/runtime/hyperf.pid';
         $pid = file_exists($pidFile) ? intval(file_get_contents($pidFile)) : false;
         if ($pid && Process::kill($pid, SIG_DFL)) {
-            if (!Process::kill($pid, SIGTERM)) {
-                $this->io->error('old mochat server stop error.');
-                die();
+            if (! Process::kill($pid, SIGTERM)) {
+                $this->io->error('old Gb server stop error.');
+                exit;
             }
 
             while (Process::kill($pid, SIG_DFL)) {

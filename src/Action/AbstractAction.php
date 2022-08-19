@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
- * @link     https://mo.chat
- * @document https://mochat.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
-namespace MoChat\Framework\Action;
+namespace Gb\Framework\Action;
 
 use Hyperf\Di\Annotation\Inject;
 use Hyperf\HttpServer\Contract\RequestInterface;
@@ -17,21 +17,12 @@ use Psr\Container\ContainerInterface;
 
 abstract class AbstractAction
 {
-    /**
-     * @Inject
-     * @var ContainerInterface
-     */
-    protected $container;
+    #[Inject]
+    protected ContainerInterface $container;
 
-    /**
-     * @Inject
-     * @var RequestInterface
-     */
-    protected $request;
+    #[Inject]
+    protected RequestInterface $request;
 
-    /**
-     * @Inject
-     * @var ResponseInterface
-     */
-    protected $response;
+    #[Inject]
+    protected ResponseInterface $response;
 }

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
- * @link     https://mo.chat
- * @document https://mochat.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
-namespace MoChat\Framework\Command;
+namespace Gb\Framework\Command;
 
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\StdoutLoggerInterface;
@@ -16,23 +16,18 @@ use Hyperf\Server\ServerFactory;
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Swoole\Runtime;
 use Swoole\Process;
+use Swoole\Runtime;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-/**
- * @\Hyperf\Command\Annotation\Command()
- */
+#[\Hyperf\Command\Annotation\Command]
 class RestartServer extends Command
 {
-    /**
-     * @var ContainerInterface
-     */
-    private $container;
+    private ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {
@@ -42,7 +37,7 @@ class RestartServer extends Command
 
     protected function configure()
     {
-        $this->setDescription('Restart mochat servers.')
+        $this->setDescription('Restart Gb servers.')
             ->addOption('clear', 'c', InputOption::VALUE_OPTIONAL, 'clear runtime container', false);
     }
 
@@ -53,18 +48,18 @@ class RestartServer extends Command
         $io = new SymfonyStyle($input, $output);
         $pidFile = BASE_PATH . '/runtime/hyperf.pid';
         $pid = file_exists($pidFile) ? intval(file_get_contents($pidFile)) : false;
-        if (!$pid) {
-            $io->note('mochat server pid is invalid.');
+        if (! $pid) {
+            $io->note('Gb server pid is invalid.');
             return -1;
         }
 
-        if (!Process::kill($pid, SIG_DFL)) {
-            $io->note('mochat server process does not exist.');
+        if (! Process::kill($pid, SIG_DFL)) {
+            $io->note('Gb server process does not exist.');
             return -1;
         }
 
-        if (!Process::kill($pid, SIGTERM)) {
-            $io->error('mochat server stop error.');
+        if (! Process::kill($pid, SIGTERM)) {
+            $io->error('Gb server stop error.');
             return -1;
         }
 
@@ -81,7 +76,7 @@ class RestartServer extends Command
             ->setLogger($this->container->get(StdoutLoggerInterface::class));
 
         $serverConfig = $this->container->get(ConfigInterface::class)->get('server', []);
-        if (!$serverConfig) {
+        if (! $serverConfig) {
             throw new InvalidArgumentException('At least one server should be defined.');
         }
 
@@ -122,7 +117,7 @@ class RestartServer extends Command
          */
         $useShortname = ini_get_all('swoole')['swoole.use_shortname']['local_value'];
         $useShortname = strtolower(trim(str_replace('0', '', $useShortname)));
-        if (!in_array($useShortname, ['', 'off', 'false'], true)) {
+        if (! in_array($useShortname, ['', 'off', 'false'], true)) {
             $output->writeln('<error>ERROR</error> Swoole short name have to disable before start server, please set swoole.use_shortname = off into your php.ini.');
             exit(0);
         }

@@ -2,30 +2,25 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
- * @link     https://mo.chat
- * @document https://mochat.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
-namespace MoChat\Framework\Command;
+namespace Gb\Framework\Command;
 
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Command\Command as HyperfCommand;
 use Hyperf\Utils\Str;
 use Psr\Container\ContainerInterface;
 
-/**
- * @Command
- */
+#[Command]
 class ServiceInterfaceCommand extends HyperfCommand
 {
     use CommandTrait;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    
+    protected ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {
@@ -37,13 +32,13 @@ class ServiceInterfaceCommand extends HyperfCommand
     public function configure()
     {
         parent::configure();
-        $this->setDescription('mochat - 生成service, 默认生成于 app/Contract 目录下');
+        $this->setDescription('Gb - 生成service, 默认生成于 app/Contract 目录下');
         $this->configureTrait();
     }
 
     public function handle()
     {
-        ## 获取配置
+        # # 获取配置
         [$models, $path] = $this->stubConfig();
 
         $this->createInterface($models, $path);
@@ -57,12 +52,12 @@ class ServiceInterfaceCommand extends HyperfCommand
     protected function createInterface(array $models, string $modelPath): void
     {
         $interfaceSpace = ucfirst(str_replace(['/', 'Model'], ['\\', 'Contract'], $modelPath));
-        $interfacePath  = str_replace('Model', 'Contract', $modelPath);
+        $interfacePath = str_replace('Model', 'Contract', $modelPath);
 
         $stub = file_get_contents(__DIR__ . '/stubs/ServiceInterface.stub');
 
         foreach ($models as $model) {
-            $interface   = $model . 'ServiceInterface';
+            $interface = $model . 'ServiceInterface';
             $serviceFile = BASE_PATH . '/' . $interfacePath . '/' . $interface . '.php';
             $fileContent = str_replace(
                 ['#INTERFACE#', '#INTERFACE_NAMESPACE#', '#MODEL#', '#MODEL_PLURA#'],

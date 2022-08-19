@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
+ * This file is part of Gb.
  * @link     https://mo.chat
- * @document https://mochat.wiki
+ * @document https://Gb.wiki
  * @contact  group@mo.chat
- * @license  https://github.com/mochatcloud/mochat/blob/master/LICENSE
+ * @license  https://github.com/Gbcloud/Gb/blob/master/LICENSE
  */
 namespace #SERVICE_NAMESPACE#;
 
 use #MODEL_NAMESPACE#\#MODEL#;
 use #INTERFACE_NAMESPACE#\#MODEL#ServiceInterface;
-use MoChat\Framework\Service\AbstractService;
+use Gb\Framework\Service\AbstractService;
 
 class #MODEL#Service extends AbstractService implements #MODEL#ServiceInterface
 {

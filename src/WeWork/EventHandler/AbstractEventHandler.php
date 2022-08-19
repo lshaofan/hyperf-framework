@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
+ * This file is part of Gb.
  * @link     https://mo.chat
- * @document https://mochat.wiki
+ * @document https://Gb.wiki
  * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * @license  https://github.com/Gb-cloud/Gb/blob/master/LICENSE
  */
-namespace MoChat\Framework\WeWork\EventHandler;
+namespace Gb\Framework\WeWork\EventHandler;
 
 use EasyWeChat\Kernel\Contracts\EventHandlerInterface;
-use EasyWeChat\Kernel\Messages\Message;
+use EasyWeChat\Kernel\Message;
 
 abstract class AbstractEventHandler implements EventHandlerInterface
 {
     /**
      * @var array wx请求消息
      */
-    protected $message;
+    protected array $message;
 
     /**
      * @var bool 是否停止传递 handler
      */
-    private $propagationStatus = false;
+    private bool $propagationStatus = false;
 
     /**
      * @param null $payload wx请求消息

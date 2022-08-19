@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
- * @link     https://mo.chat
- * @document https://mochat.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
-namespace MoChat\Framework\Command;
+namespace Gb\Framework\Command;
 
 use RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
@@ -48,7 +48,7 @@ trait CommandTrait
         if (! is_dir($dir)) {
             @mkdir($dir, 0755, true);
         }
-        $res                   = file_put_contents($path, $content);
+        $res = file_put_contents($path, $content);
         $res === false && $res = null;
         return $res;
     }
@@ -58,13 +58,13 @@ trait CommandTrait
      */
     protected function stubConfig(string $optionPath = 'model-path'): array
     {
-        ## 路径
+        # # 路径
         $dirPath = $this->input->getOption($optionPath);
         if (! $dirPath) {
             throw new RuntimeException('获取参数[--' . $optionPath . ']失败', 500);
         }
 
-        ## 名称
+        # # 名称
         $name = $this->input->getArgument('table');
         if ($name) {
             $name = array_reduce(explode('_', $name), function ($carry, $item) {
@@ -86,9 +86,9 @@ trait CommandTrait
     protected function doTouch(string $serviceFile, string $fileContent): void
     {
         $isForce = $this->input->getOption('force');
-        $flag    = 0;
+        $flag = 0;
         if (file_exists($serviceFile)) {
-            ## 强制覆盖
+            # # 强制覆盖
             if ($isForce === false) {
                 $this->line('exist:[' . $serviceFile . ']', 'error');
                 return;

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
+ * This file is part of Gb.
  * @link     https://mo.chat
- * @document https://mochat.wiki
+ * @document https://Gb.wiki
  * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * @license  https://github.com/Gb-cloud/Gb/blob/master/LICENSE
  */
-namespace MoChat\Framework\Log;
+namespace Gb\Framework\Log;
 
 use Psr\Container\ContainerInterface;
 
 class StdoutLoggerFactory
 {
-    public function __invoke(ContainerInterface $container)
+    public function __invoke(ContainerInterface $container): \Psr\Log\LoggerInterface
     {
         return Log::get('sys');
     }

@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
- * @link     https://mo.chat
- * @document https://mochat.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
-namespace MoChat\Framework\Exception\Handler;
+namespace Gb\Framework\Exception\Handler;
 
+use Gb\Framework\Constants\ErrorCode;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
-use MoChat\Framework\Constants\ErrorCode;
 use Qbhy\HyperfAuth\Exception\AuthException;
 use Qbhy\HyperfAuth\Exception\UnauthorizedException;
 use Qbhy\SimpleJwt\Exceptions\InvalidTokenException;
@@ -23,37 +23,33 @@ use Throwable;
 
 class AuthExceptionHandler extends ExceptionHandler
 {
-    /**
-     * @var StdoutLoggerInterface
-     */
-    protected $logger;
+
+    protected StdoutLoggerInterface $logger;
 
     public function __construct(StdoutLoggerInterface $logger)
     {
         $this->logger = $logger;
     }
 
-    /**
-     * @return mixed
-     */
-    public function handle(Throwable $throwable, \Psr\Http\Message\ResponseInterface $response)
+
+    public function handle(Throwable $throwable, \Psr\Http\Message\ResponseInterface $response): mixed
     {
         $code = ErrorCode::AUTH_FAILED;
 
-        ## 格式化输出
-        $throwable instanceof UnauthorizedException && $code                = ErrorCode::AUTH_UNAUTHORIZED;
+        # # 格式化输出
+        $throwable instanceof UnauthorizedException && $code = ErrorCode::AUTH_UNAUTHORIZED;
         $throwable->getPrevious() instanceof TokenExpiredException && $code = ErrorCode::AUTH_SESSION_EXPIRED;
         $throwable->getPrevious() instanceof InvalidTokenException && $code = ErrorCode::AUTH_TOKEN_INVALID;
 
         $falseMsg = ErrorCode::getMessage($code);
         $httpCode = ErrorCode::getHttpCode($code);
 
-        $data       = responseDataFormat($code, $falseMsg);
+        $data = responseDataFormat($code, $falseMsg);
         $dataStream = new SwooleStream(json_encode($data, JSON_UNESCAPED_UNICODE));
 
-        ## 阻止异常冒泡
+        # # 阻止异常冒泡
         $this->stopPropagation();
-        return $response->withHeader('Server', 'mochat')
+        return $response->withHeader('Server', 'Gb')
             ->withAddedHeader('Content-Type', 'application/json;charset=utf-8')
             ->withStatus($httpCode)
             ->withBody($dataStream);

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
- * @link     https://mo.chat
- * @document https://mochat.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
-namespace MoChat\Framework\Exception;
+namespace Gb\Framework\Exception;
 
+use Gb\Framework\Constants\ErrorCode;
 use Hyperf\Server\Exception\ServerException;
-use MoChat\Framework\Constants\ErrorCode;
 
 class CommonException extends ServerException
 {

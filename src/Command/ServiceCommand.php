@@ -2,30 +2,25 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
- * @link     https://mo.chat
- * @document https://mochat.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
-namespace MoChat\Framework\Command;
+namespace Gb\Framework\Command;
 
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Command\Command as HyperfCommand;
 use Hyperf\Utils\Str;
 use Psr\Container\ContainerInterface;
 
-/**
- * @Command
- */
+#[Command]
 class ServiceCommand extends HyperfCommand
 {
     use CommandTrait;
 
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    protected ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {
@@ -37,13 +32,13 @@ class ServiceCommand extends HyperfCommand
     public function configure()
     {
         parent::configure();
-        $this->setDescription('mochat - 生成service, 默认生成于 app/Service 目录下');
+        $this->setDescription('Gb - 生成service, 默认生成于 app/Service 目录下');
         $this->configureTrait();
     }
 
     public function handle()
     {
-        ## 获取配置
+        # # 获取配置
         [$models, $path] = $this->stubConfig();
 
         $this->createServices($models, $path);
@@ -56,8 +51,8 @@ class ServiceCommand extends HyperfCommand
      */
     protected function createServices(array $models, string $modelPath): void
     {
-        $modelSpace     = ucfirst(str_replace('/', '\\', $modelPath));
-        $serviceSpace   = str_replace('Model', 'Service', $modelSpace);
+        $modelSpace = ucfirst(str_replace('/', '\\', $modelPath));
+        $serviceSpace = str_replace('Model', 'Service', $modelSpace);
         $interfaceSpace = str_replace('Model', 'Contract', $modelSpace);
 
         $stub = file_get_contents(__DIR__ . '/stubs/Service.stub');

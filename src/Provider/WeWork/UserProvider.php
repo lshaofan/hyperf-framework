@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
+ * This file is part of Gb.
  * @link     https://mo.chat
- * @document https://mochat.wiki
+ * @document https://Gb.wiki
  * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * @license  https://github.com/Gb-cloud/Gb/blob/master/LICENSE
  */
-namespace MoChat\Framework\Provider\WeWork;
+namespace Gb\Framework\Provider\WeWork;
 
-use MoChat\Framework\Contract\WeWork\UserConfigurable;
+use Gb\Framework\Contract\WeWork\UserConfigurable;
 
 class UserProvider extends AbstractProvider
 {
     /**
      * @var UserConfigurable
      */
-    protected $service;
+    protected mixed $service;
 
     /**
      * @return array app配置

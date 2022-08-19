@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
- * @link     https://mo.chat
- * @document https://mochat.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
-namespace MoChat\Framework\Command;
+namespace Gb\Framework\Command;
 
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Command\Command as HyperfCommand;
@@ -16,17 +16,12 @@ use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-/**
- * @Command
- */
+#[Command]
 class ActionCommand extends HyperfCommand
 {
     use CommandTrait;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
+    
+    protected ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {
@@ -38,7 +33,7 @@ class ActionCommand extends HyperfCommand
     public function configure()
     {
         parent::configure();
-        $this->setDescription('mochat - 生成action, 默认生成于 app/Action 目录下');
+        $this->setDescription('Gb - 生成action, 默认生成于 app/Action 目录下');
         $this->addOption(
             'force',
             'f',
@@ -59,9 +54,9 @@ class ActionCommand extends HyperfCommand
 
     public function handle()
     {
-        ## 路径
+        # # 路径
         $dirPath = $this->input->getOption('path');
-        ## 名称
+        # # 名称
         $name = $this->input->getArgument('class');
 
         $this->createActions($name, $dirPath);
@@ -75,7 +70,7 @@ class ActionCommand extends HyperfCommand
     protected function createActions(string $name, string $dirPath): void
     {
         $dirPath .= '/' . $name;
-        $nameSpace   = ucfirst(str_replace('/', '\\', $dirPath));
+        $nameSpace = ucfirst(str_replace('/', '\\', $dirPath));
         $lowerAction = lcfirst($name);
 
         $stub = file_get_contents(__DIR__ . '/stubs/Action.stub');

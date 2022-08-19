@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
+ * This file is part of Gb.
  * @link     https://mo.chat
- * @document https://mochat.wiki
+ * @document https://Gb.wiki
  * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * @license  https://github.com/Gb-cloud/Gb/blob/master/LICENSE
  */
-namespace MoChat\Framework\Middleware\Traits;
+namespace Gb\Framework\Middleware\Traits;
 
 use FastRoute\Dispatcher;
 use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\HttpServer\Router\Dispatched;
 use Hyperf\Utils\ApplicationContext;
-use MoChat\Framework\Constants\ErrorCode;
-use MoChat\Framework\Exception\CommonException;
+use Gb\Framework\Constants\ErrorCode;
+use Gb\Framework\Exception\CommonException;
 
 trait Route
 {
@@ -32,7 +32,7 @@ trait Route
                 throw new CommonException(ErrorCode::INVALID_HTTP_METHOD);
             case Dispatcher::FOUND:
                 $dynRoute = $dispatched->handler->route;
-                if (strpos($dynRoute, '{') === false) {
+                if (!str_contains($dynRoute, '{')) {
                     break;
                 }
                 $dynRoute = preg_replace('/:.*?}($|\/)/', '}/', $dispatched->handler->route);

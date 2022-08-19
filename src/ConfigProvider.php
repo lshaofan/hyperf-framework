@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
- * @link     https://mo.chat
- * @document https://mochat.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
-namespace MoChat\Framework;
+namespace Gb\Framework;
 
-use MoChat\Framework\Exception\Handler\AuthExceptionHandler;
-use MoChat\Framework\Exception\Handler\CommonExceptionHandler;
-use MoChat\Framework\Exception\Handler\GuzzleRequestExceptionHandler;
-use MoChat\Framework\Exception\Handler\ValidationExceptionHandler;
-use MoChat\Framework\Middleware\CorsMiddleware;
-use MoChat\Framework\Middleware\ResponseMiddleware;
+use Gb\Framework\Exception\Handler\AuthExceptionHandler;
+use Gb\Framework\Exception\Handler\CommonExceptionHandler;
+use Gb\Framework\Exception\Handler\GuzzleRequestExceptionHandler;
+use Gb\Framework\Exception\Handler\ValidationExceptionHandler;
+use Gb\Framework\Middleware\CorsMiddleware;
+use Gb\Framework\Middleware\ResponseMiddleware;
 
 class ConfigProvider
 {
@@ -56,15 +56,15 @@ class ConfigProvider
             ],
             'publish' => [
                 [
-                    'id'          => 'framework',
+                    'id' => 'framework',
                     'description' => 'framework配置',
-                    'source'      => __DIR__ . '/../publish/framework.php',
+                    'source' => __DIR__ . '/../publish/framework.php',
                     'destination' => BASE_PATH . '/config/autoload/framework.php',
                 ],
                 [
-                    'id'          => 'dependencies',
+                    'id' => 'dependencies',
                     'description' => '依赖配置',
-                    'source'      => __DIR__ . '/../publish/dependencies.php',
+                    'source' => __DIR__ . '/../publish/dependencies.php',
                     'destination' => BASE_PATH . '/config/autoload/dependencies.php',
                 ],
             ],
@@ -78,7 +78,7 @@ class ConfigProvider
      */
     protected function serviceMap(string $path = 'app'): array
     {
-        $services    = readFileName(BASE_PATH . '/' . $path . '/Service');
+        $services = readFileName(BASE_PATH . '/' . $path . '/Service');
         $spacePrefix = ucfirst($path);
 
         $dependencies = [];

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
- * @link     https://mo.chat
- * @document https://mochat.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
-namespace MoChat\Framework\Model;
+namespace Gb\Framework\Model;
 
 use Hyperf\DbConnection\Model\Model;
 use Hyperf\Utils\Str;
@@ -23,7 +23,7 @@ class AbstractModel extends Model
      */
     public function getOneById(int $id, array $columns = ['*']): array
     {
-        $data          = self::query()->find($id, $columns);
+        $data = self::query()->find($id, $columns);
         $data || $data = collect([]);
         return $data->toArray();
     }
@@ -36,7 +36,7 @@ class AbstractModel extends Model
      */
     public function getAllById(array $ids, array $columns = ['*']): array
     {
-        $data          = self::query()->find($ids, $columns);
+        $data = self::query()->find($ids, $columns);
         $data || $data = collect([]);
         return $data->toArray();
     }
@@ -52,13 +52,13 @@ class AbstractModel extends Model
     {
         $model = $this->optionWhere($where, $options);
 
-        ## 分页参数
-        $perPage  = isset($options['perPage']) ? (int) $options['perPage'] : 15;
+        # # 分页参数
+        $perPage = isset($options['perPage']) ? (int) $options['perPage'] : 15;
         $pageName = $options['pageName'] ?? 'page';
-        $page     = isset($options['page']) ? (int) $options['page'] : null;
+        $page = isset($options['page']) ? (int) $options['page'] : null;
 
-        ## 分页
-        $data          = $model->paginate($perPage, $columns, $pageName, $page);
+        # # 分页
+        $data = $model->paginate($perPage, $columns, $pageName, $page);
         $data || $data = collect([]);
         return $data->toArray();
     }
@@ -131,15 +131,15 @@ class AbstractModel extends Model
 
         if (! empty($where) && is_array($where)) {
             foreach ($where as $k => $v) {
-                ## 一维数组
+                # # 一维数组
                 if (! is_array($v)) {
                     $model = $model->where($k, $v);
                     continue;
                 }
 
-                ## 二维索引数组
+                # # 二维索引数组
                 if (is_numeric($k)) {
-                    $v[1]    = mb_strtoupper($v[1]);
+                    $v[1] = mb_strtoupper($v[1]);
                     $boolean = isset($v[3]) ? $v[3] : 'and';
                     if (in_array($v[1], ['=', '!=', '<', '<=', '>', '>=', 'LIKE', 'NOT LIKE'])) {
                         $model = $model->where($v[0], $v[1], $v[2], $boolean);
@@ -151,16 +151,16 @@ class AbstractModel extends Model
                         $model = $model->whereRaw($v[0], $v[2], $boolean);
                     }
                 } else {
-                    ## 二维关联数组
+                    # # 二维关联数组
                     $model = $model->whereIn($k, $v);
                 }
             }
         }
 
-        ## 排序
+        # # 排序
         isset($options['orderByRaw']) && $model = $model->orderByRaw($options['orderByRaw']);
 
-        ## 限制集合
+        # # 限制集合
         isset($options['skip']) && $model = $model->skip($options['skip']);
         isset($options['take']) && $model = $model->take($options['take']);
 
@@ -176,12 +176,12 @@ class AbstractModel extends Model
      */
     public function columnsFormat(array $value, bool $isTransSnake = false, bool $isColumnFilter = false): array
     {
-        $formatValue                     = [];
+        $formatValue = [];
         $isColumnFilter && $tableColumns = array_flip(\Hyperf\Database\Schema\Schema::getColumnListing($this->getTable()));
         foreach ($value as $field => $fieldValue) {
-            ## 转snake
+            # # 转snake
             $isTransSnake && $field = Str::snake($field);
-            ## 过滤
+            # # 过滤
             if ($isColumnFilter && ! isset($tableColumns[$field])) {
                 continue;
             }
@@ -199,15 +199,15 @@ class AbstractModel extends Model
      */
     public function batchUpdateByIds(array $values, bool $transToSnake = false, bool $isColumnFilter = false): int
     {
-        ## ksort
+        # # ksort
         foreach ($values as &$value) {
             ksort($value);
             $transToSnake && $value = $this->columnsFormat($value, $transToSnake, $isColumnFilter);
         }
 
-        $tablePrefix      = \Hyperf\DbConnection\Db::connection()->getTablePrefix();
-        $table            = $this->getTable();
-        $primary          = $this->getKeyName();
+        $tablePrefix = \Hyperf\DbConnection\Db::connection()->getTablePrefix();
+        $table = $this->getTable();
+        $primary = $this->getKeyName();
         [$sql, $bindings] = $this->compileBatchUpdateByIds($tablePrefix . $table, $values, $primary);
 
         $affectedRows = \Hyperf\DbConnection\Db::update($sql, $bindings);
@@ -228,7 +228,7 @@ class AbstractModel extends Model
         }
 
         // Take the first value as columns
-        $columns  = array_keys(current($values));
+        $columns = array_keys(current($values));
         // values
         $bindings = [];
 
@@ -240,7 +240,7 @@ class AbstractModel extends Model
 
             $setStr .= " `{$column}` = case `{$primary}` ";
             foreach ($values as $row) {
-                $value      = $row[$column];
+                $value = $row[$column];
                 $bindings[] = $value;
 
                 $setStr .= " when '{$row[$primary]}' then ? ";
@@ -250,7 +250,7 @@ class AbstractModel extends Model
         // Remove the last character
         $setStr = substr($setStr, 0, -1);
 
-        $ids    = array_column($values, $primary);
+        $ids = array_column($values, $primary);
         $idsStr = implode(',', $ids);
 
         $sql = "update {$table} set {$setStr} where {$primary} in ({$idsStr})";

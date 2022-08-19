@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
+ * This file is part of Gb.
  * @link     https://mo.chat
- * @document https://mochat.wiki
+ * @document https://Gb.wiki
  * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * @license  https://github.com/Gb-cloud/Gb/blob/master/LICENSE
  */
 if (! function_exists('readFileName')) {
     /**

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
+ * This file is part of Gb.
  * @link     https://mo.chat
- * @document https://mochat.wiki
+ * @document https://Gb.wiki
  * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * @license  https://github.com/Gb-cloud/Gb/blob/master/LICENSE
  */
-namespace MoChat\Framework\Middleware;
+namespace Gb\Framework\Middleware;
 
 use Hyperf\Contract\ConfigInterface;
-use MoChat\Framework\Middleware\Traits\Route;
+use Gb\Framework\Middleware\Traits\Route;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -23,12 +23,10 @@ class JwtAuthMiddleware extends AuthMiddleware
 {
     use Route;
 
-    /**
-     * @var string 路由白名单
-     */
-    protected $authWhiteRoutes;
 
-    protected $guards = ['jwt'];
+    protected mixed $authWhiteRoutes;
+
+    protected array $guards = ['jwt'];
 
     public function __construct(ContainerInterface $container, ConfigInterface $config)
     {

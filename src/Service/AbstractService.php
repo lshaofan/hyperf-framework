@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
- * @link     https://mo.chat
- * @document https://mochat.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
-namespace MoChat\Framework\Service;
+namespace Gb\Framework\Service;
 
 abstract class AbstractService
 {
     /**
      * @var \Hyperf\Database\Model\Model
      */
-    protected $model;
+    protected mixed $model;
 
     public function __construct()
     {
-        $modelClass  = str_replace(['\Service', 'Service'], ['\Model', ''], get_class($this));
+        $modelClass = str_replace(['\Service', 'Service'], ['\Model', ''], get_class($this));
         $this->model = make($modelClass);
     }
 }

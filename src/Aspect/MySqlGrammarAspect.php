@@ -2,28 +2,27 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
- * @link     https://mo.chat
- * @document https://mochat.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
-namespace MoChat\Framework\Aspect;
+namespace Gb\Framework\Aspect;
 
 use Hyperf\Di\Annotation\Aspect;
 use Hyperf\Di\Aop\AbstractAspect;
 use Hyperf\Di\Aop\ProceedingJoinPoint;
 
-/**
- * @Aspect
- */
+
+#[Aspect]
 class MySqlGrammarAspect extends AbstractAspect
 {
-    public $classes = [
+    public array $classes = [
         'Hyperf\Database\Schema\Grammars\MySqlGrammar::compileColumnListing',
     ];
 
-    public $annotations = [
+    public array $annotations = [
     ];
 
     /**

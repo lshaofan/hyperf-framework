@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 /**
- * This file is part of MoChat.
- * @link     https://mo.chat
- * @document https://mochat.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/mochat-cloud/mochat/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
-namespace MoChat\Framework\Provider\WeWork;
+namespace Gb\Framework\Provider\WeWork;
 
 use EasyWeChat\Factory;
-use EasyWeChat\Kernel\ServiceContainer;
-use EasyWeChat\Work\Application;
 use EasyWeChat\OpenWork\Application as OpenWorkApplication;
+use EasyWeChat\Work\Application;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
 use Hyperf\Guzzle\CoroutineHandler;
@@ -25,37 +24,29 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class AbstractProvider
 {
-    /**
-     * @var RequestInterface
-     */
-    protected $request;
 
-    /**
-     * @var array 微信配置
-     */
-    protected $wxConfig;
+    protected RequestInterface $request;
 
-    /**
-     * @var mixed
-     */
-    protected $service;
 
-    /**
-     * @var string ...
-     */
-    protected $name;
+    protected mixed $wxConfig;
+
+
+    protected mixed $service;
+
+
+    protected string $name;
 
     public function __construct(array $config, string $name, RequestInterface $request)
     {
-        ## init.wxConfig
+        # # init.wxConfig
         $this->wxConfig = $config['config'];
 
-        $this->name    = $name;
+        $this->name = $name;
         $this->service = make($config['providers'][$name]['service']);
 
         $this->request = $request;
 
-        ## loadConfig.wxConfig
+        # # loadConfig.wxConfig
         [$toUserName, $agentIds] = $this->callbackParams();
         isDiRequestInit() && $this->setWxConfig($this->config($toUserName, $agentIds));
     }
@@ -82,7 +73,6 @@ abstract class AbstractProvider
 
     /**
      * @param array $wxConfig 微信配置
-     * @return OpenWorkApplication
      */
     public function openApp($wxConfig = []): OpenWorkApplication
     {
@@ -119,8 +109,8 @@ abstract class AbstractProvider
     protected function callbackParams(): array
     {
         if (isDiRequestInit()) {
-            $agentId    = $this->request->input('AgentID');
-            $agentIds   = is_string($agentId) ? [$agentId] : $agentId;
+            $agentId = $this->request->input('AgentID');
+            $agentIds = is_string($agentId) ? [$agentId] : $agentId;
             $toUserName = $this->request->post('ToUserName') ?: $this->request->query('ToUserName');
             return [$toUserName, $agentIds];
         }
@@ -137,19 +127,19 @@ abstract class AbstractProvider
             return $app;
         }
 
-        $get         = $this->request->getQueryParams();
-        $post        = $this->request->getParsedBody();
-        $cookie      = $this->request->getCookieParams();
+        $get = $this->request->getQueryParams();
+        $post = $this->request->getParsedBody();
+        $cookie = $this->request->getCookieParams();
         $uploadFiles = $this->request->getUploadedFiles() ?? [];
-        $server      = $this->request->getServerParams();
-        $xml         = $this->request->getBody()->getContents();
-        $files       = [];
+        $server = $this->request->getServerParams();
+        $xml = $this->request->getBody()->getContents();
+        $files = [];
         /** @var \Hyperf\HttpMessage\Upload\UploadedFile $v */
         foreach ($uploadFiles as $k => $v) {
             $files[$k] = $v->toArray();
         }
 
-        $request          = new Request($get, $post, [], $cookie, $files, $server, $xml);
+        $request = new Request($get, $post, [], $cookie, $files, $server, $xml);
         $request->headers = new HeaderBag($this->request->getHeaders());
         $app->rebind('request', $request);
 
@@ -164,7 +154,7 @@ abstract class AbstractProvider
     {
         $handler = new CoroutineHandler();
         // 设置 HttpClient，部分接口直接使用了 http_client。
-        $httpConfig            = $app['config']->get('http', []);
+        $httpConfig = $app['config']->get('http', []);
         $httpConfig['handler'] = $stack = HandlerStack::create($handler);
         $app->rebind('http_client', new Client($httpConfig));
 
@@ -175,7 +165,7 @@ abstract class AbstractProvider
             // oauth
             $app->oauth->setGuzzleOptions([
                 'http_errors' => false,
-                'handler'     => $stack,
+                'handler' => $stack,
             ]);
         }
 
