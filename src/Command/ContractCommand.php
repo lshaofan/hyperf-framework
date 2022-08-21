@@ -16,7 +16,7 @@ use Hyperf\Utils\Str;
 use Psr\Container\ContainerInterface;
 
 #[Command]
-class ServiceInterfaceCommand extends HyperfCommand
+class ContractCommand extends HyperfCommand
 {
     use CommandTrait;
 
@@ -26,38 +26,47 @@ class ServiceInterfaceCommand extends HyperfCommand
     {
         $this->container = $container;
 
-        parent::__construct('mcGen:serviceInterface');
+        parent::__construct('gbGen:contract');
     }
 
-    public function configure()
+    public function configure(): void
     {
         parent::configure();
-        $this->setDescription('Gb - 生成service, 默认生成于 app/Contract 目录下');
+        $this->setDescription('Gb - 生成Contract, 默认生成于 app/Contract 目录下');
         $this->configureTrait();
     }
 
-    public function handle()
+    public function handle(): void
     {
         # # 获取配置
         [$models, $path] = $this->stubConfig();
 
-        $this->createInterface($models, $path);
+        $namespace = $this->input->getOption('namespace');
+        if (is_string($namespace)) {
+            $this->createInterface($models, $path, $namespace);
+        }
     }
 
     /**
      * 根据模型 创建服务契约.
      * @param array $models 模型名称
      * @param string $modelPath 模型路径
+     * @phpstan-param array<string, string> $models
      */
-    protected function createInterface(array $models, string $modelPath): void
+    protected function createInterface(array $models, string $modelPath, string $namespace): void
     {
-        $interfaceSpace = ucfirst(str_replace(['/', 'Model'], ['\\', 'Contract'], $modelPath));
+//        $interfaceSpace = ucfirst(str_replace(['/', 'Model'], ['\\', 'Contract'], $modelPath));
+        # 将命名空间 中Model 替换为 Contract 
+        $interfaceSpace = str_replace('Model', 'Contract', $namespace);
         $interfacePath = str_replace('Model', 'Contract', $modelPath);
 
-        $stub = file_get_contents(__DIR__ . '/stubs/ServiceInterface.stub');
+        $stub = file_get_contents(__DIR__ . '/stubs/Contract.stub');
+        if (! $stub) {
+            return;
+        }
 
         foreach ($models as $model) {
-            $interface = $model . 'ServiceInterface';
+            $interface = $model . 'Contract';
             $serviceFile = BASE_PATH . '/' . $interfacePath . '/' . $interface . '.php';
             $fileContent = str_replace(
                 ['#INTERFACE#', '#INTERFACE_NAMESPACE#', '#MODEL#', '#MODEL_PLURA#'],

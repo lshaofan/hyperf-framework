@@ -18,6 +18,9 @@ use Gb\Framework\Middleware\CorsMiddleware;
 
 class ConfigProvider
 {
+    /**
+     * @return array<string, mixed>
+     */
     public function __invoke(): array
     {
         $serviceMap = $this->serviceMap();
@@ -73,7 +76,7 @@ class ConfigProvider
     /**
      * 模型服务与契约的依赖配置.
      * @param string $path 契约与服务的相对路径
-     * @return array 依赖数据
+     * @return array<mixed,mixed> 依赖数据
      */
     protected function serviceMap(string $path = 'app'): array
     {
@@ -82,7 +85,7 @@ class ConfigProvider
 
         $dependencies = [];
         foreach ($services as $service) {
-            $dependencies[$spacePrefix . '\\Contract\\' . $service . 'Interface'] = $spacePrefix . '\\Service\\' . $service;
+            $dependencies[$spacePrefix . '\\Contract\\' . $service . 'Contract'] = $spacePrefix . '\\Service\\' . $service;
         }
 
         return $dependencies;

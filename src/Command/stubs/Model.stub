@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 /**
- * This file is part of Gb.
- * @link     https://mo.chat
- * @document https://Gb.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/Gbcloud/Gb/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
+
 namespace %NAMESPACE%;
 
 %USES%
@@ -19,29 +20,23 @@ class %CLASS% extends %INHERITANCE%
 
     /**
      * The table associated with the model.
-     *
-     * @var string
      */
-    protected $table = '%TABLE%';
+    protected ?string $table = '%TABLE%';
 
     /**
      * The connection name for the model.
-     *
-     * @var string
      */
-    protected $connection = '%CONNECTION%';
+    protected ?string $connection = '%CONNECTION%';
 
     /**
      * The attributes that are mass assignable.
-     *
-     * @var array
+     * @var array<string>
      */
-    protected $fillable = [];
+    protected array $fillable = [];
 
     /**
      * The attributes that should be cast to native types.
-     *
-     * @var array
+     * @var array<string,string>
      */
-    protected $casts = [];
+    protected array $casts = [];
 }

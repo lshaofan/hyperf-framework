@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 /**
- * This file is part of Gb.
- * @link     https://mo.chat
- * @document https://Gb.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/Gbcloud/Gb/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
 namespace #SERVICE_NAMESPACE#;
 
 use #MODEL_NAMESPACE#\#MODEL#;
-use #INTERFACE_NAMESPACE#\#MODEL#ServiceInterface;
+use #INTERFACE_NAMESPACE#\#MODEL#Contract;
 use Gb\Framework\Service\AbstractService;
 
-class #MODEL#Service extends AbstractService implements #MODEL#ServiceInterface
+class #MODEL#Service extends AbstractService implements #MODEL#Contract
 {
     /**
      * @var #MODEL#
      */
-    protected $model;
+    protected mixed $model;
 
     /**
      * {@inheritdoc}

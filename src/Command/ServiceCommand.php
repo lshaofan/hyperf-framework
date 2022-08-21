@@ -26,38 +26,50 @@ class ServiceCommand extends HyperfCommand
     {
         $this->container = $container;
 
-        parent::__construct('mcGen:service');
+        parent::__construct('gbGen:service');
     }
 
-    public function configure()
+    public function configure(): void
     {
         parent::configure();
         $this->setDescription('Gb - 生成service, 默认生成于 app/Service 目录下');
         $this->configureTrait();
     }
 
-    public function handle()
+    public function handle(): void
     {
         # # 获取配置
         [$models, $path] = $this->stubConfig();
-
-        $this->createServices($models, $path);
+        # 获取命令参数 namespace
+        $namespace = $this->input->getOption('namespace');
+        if (is_string($namespace)) {
+            $this->createServices($models, $path, $namespace);
+        }
     }
 
     /**
      * 根据模型 创建服务
      * @param array $models 模型名称
      * @param string $modelPath 模型路径
+     * @phpstan-param array<string, string> $models
      */
-    protected function createServices(array $models, string $modelPath): void
+    protected function createServices(array $models, string $modelPath, string $namespace): void
     {
-        $modelSpace = ucfirst(str_replace('/', '\\', $modelPath));
-        $serviceSpace = str_replace('Model', 'Service', $modelSpace);
-        $interfaceSpace = str_replace('Model', 'Contract', $modelSpace);
+//        $modelSpace = ucfirst(str_replace('/', '\\', $modelPath));
+        # 将命名空间 中Model 替换为 Service
+        $serviceSpace = str_replace('Model', 'Service', $namespace);
+//        $serviceSpace = str_replace('Model', 'Service', $modelSpace);
+//        $interfaceSpace = str_replace('Model', 'Contract', $modelSpace);
 
         $stub = file_get_contents(__DIR__ . '/stubs/Service.stub');
 
+        if (! $stub) {
+            return;
+        }
         foreach ($models as $model) {
+            $modelSpace = $namespace;
+
+            $interfaceSpace = str_replace('Model', 'Contract', $modelSpace);
             $serviceFile = BASE_PATH . '/' . str_replace('Model', 'Service', $modelPath) . '/' . $model . 'Service.php';
             $fileContent = str_replace(
                 ['#MODEL#', '#MODEL_NAMESPACE#', '#SERVICE_NAMESPACE#', '#INTERFACE_NAMESPACE#', '#MODEL_PLURA#'],

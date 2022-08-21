@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 /**
- * This file is part of Gb.
- * @link     https://mo.chat
- * @document https://Gb.wiki
- * @contact  group@mo.chat
- * @license  https://github.com/Gbcloud/Gb/blob/master/LICENSE
+ * This file is part of 绿鸟科技.
+ *
+ * @link     https://www.greenbirds.cn
+ * @document https://greenbirds.cn
+ * @contact  liushaofan@greenbirds.cn
  */
 namespace #INTERFACE_NAMESPACE#;
 
@@ -16,37 +16,37 @@ interface #INTERFACE#
      * 查询单条 - 根据ID.
      * @param int $id ID
      * @param array|string[] $columns 查询字段
-     * @return array 数组
+     * @return array<string,mixed> 查询结果
      */
     public function get#MODEL#ById(int $id, array $columns = ['*']): array;
 
     /**
      * 查询多条 - 根据ID.
-     * @param array $ids ID
+     * @param array<int> $ids ID
      * @param array|string[] $columns 查询字段
-     * @return array 数组
+     * @return array<string,mixed> 查询结果
      */
     public function get#MODEL_PLURA#ById(array $ids, array $columns = ['*']): array;
 
     /**
      * 多条分页.
-     * @param array $where 查询条件
+     * @param array<string,mixed> $where 查询条件
      * @param array|string[] $columns 查询字段
-     * @param array $options 可选项 ['orderByRaw'=> 'id asc', 'perPage' => 15, 'page' => null, 'pageName' => 'page']
-     * @return array 分页结果 Hyperf\Paginator\Paginator::toArray
+     * @param array<string,string> $options 可选项 ['orderByRaw'=> 'id asc', 'perPage' => 15, 'page' => null, 'pageName' => 'page']
+     * @return array<string,mixed> 分页结果 Hyperf\Paginator\Paginator::toArray
      */
     public function get#MODEL#List(array $where, array $columns = ['*'], array $options = []): array;
 
     /**
      * 添加单条
-     * @param array $data 添加的数据
+     * @param array<string,mixed> $data 添加的数据
      * @return int 自增ID
      */
     public function create#MODEL#(array $data): int;
 
     /**
      * 添加多条
-     * @param array $data 添加的数据
+     * @param array<string,mixed> $data 添加的数据
      * @return bool 执行结果
      */
     public function create#MODEL_PLURA#(array $data): bool;
@@ -54,7 +54,7 @@ interface #INTERFACE#
     /**
      * 修改单条 - 根据ID.
      * @param int $id id
-     * @param array $data 修改数据
+     * @param array<string,mixed> $data 修改数据
      * @return int 修改条数
      */
     public function update#MODEL#ById(int $id, array $data): int;
@@ -68,7 +68,7 @@ interface #INTERFACE#
 
     /**
      * 删除 - 多条
-     * @param array $ids 删除ID
+     * @param array<int> $ids 删除ID
      * @return int 删除条数
      */
     public function delete#MODEL_PLURA#(array $ids): int;

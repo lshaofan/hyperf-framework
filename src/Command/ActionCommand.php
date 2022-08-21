@@ -30,7 +30,7 @@ class ActionCommand extends HyperfCommand
         parent::__construct('gbGen:action');
     }
 
-    public function configure()
+    public function configure(): void
     {
         parent::configure();
         $this->setDescription('Gb - 生成action, 默认生成于 app/Action 目录下');
@@ -52,13 +52,16 @@ class ActionCommand extends HyperfCommand
         $this->addArgument('class', InputArgument::OPTIONAL, 'class名称', false);
     }
 
-    public function handle()
+    public function handle(): void
     {
         # # 路径
         $dirPath = $this->input->getOption('path');
         # # 名称
         $name = $this->input->getArgument('class');
 
+        if (! is_string($name) || ! is_string($dirPath)) {
+            return;
+        }
         $this->createActions($name, $dirPath);
     }
 
@@ -84,6 +87,9 @@ class ActionCommand extends HyperfCommand
             [$nameSpace, 'Update', $lowerAction . '/update', 'PUT',  '修改 - 页面'],
             [$nameSpace, 'Destroy', $lowerAction . '/destroy', 'DELETE',  '删除 - 动作'],
         ];
+        if (! is_string($stub)) {
+            return;
+        }
 
         foreach ($stubVars as $stubVar) {
             $serviceFile = BASE_PATH . '/' . $dirPath . '/' . $stubVar[1] . '.php';

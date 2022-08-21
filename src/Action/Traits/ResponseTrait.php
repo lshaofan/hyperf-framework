@@ -122,7 +122,11 @@ trait ResponseTrait
     /**
      * Return an fail response.
      *
+     * @param string $message
+     * @param int $code
      * @param null|array $errors
+     * @param array $header
+     * @return PsrResponseInterface
      */
     public function fail(string $message = '', int $code = 500, array|null $errors = null, array $header = []): PsrResponseInterface
     {

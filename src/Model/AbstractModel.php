@@ -10,6 +10,7 @@ declare(strict_types=1);
  */
 namespace Gb\Framework\Model;
 
+use Hyperf\Database\Model\Builder;
 use Hyperf\DbConnection\Model\Model;
 use Hyperf\Utils\Str;
 
@@ -19,7 +20,7 @@ class AbstractModel extends Model
      * 查询单条 - 根据ID.
      * @param int $id ID
      * @param array|string[] $columns 查询字段
-     * @return array 数组
+     * @return array<string,mixed> 数组
      */
     public function getOneById(int $id, array $columns = ['*']): array
     {
@@ -124,9 +125,9 @@ class AbstractModel extends Model
      * @param string[] $options 可选项 ['orderByRaw'=> 'id asc', 'skip' => 15, 'take' => 5]
      * @return
      */
-    public function optionWhere(array $where, array $options = [])
+    public function optionWhere(array $where, array $options = []): Builder
     {
-        /** @var \Hyperf\Database\Model\Builder $model */
+        /** @var Builder $model */
         $model = new static();
 
         if (! empty($where) && is_array($where)) {

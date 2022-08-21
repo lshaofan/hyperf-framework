@@ -41,7 +41,7 @@ class RestartServer extends Command
             ->addOption('clear', 'c', InputOption::VALUE_OPTIONAL, 'clear runtime container', false);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->checkEnvironment($output);
 
@@ -63,12 +63,14 @@ class RestartServer extends Command
             return -1;
         }
 
+        // @phpstan-ignore-next-line
         while (Process::kill($pid, SIG_DFL)) {
             sleep(1);
         }
 
+        // @phpstan-ignore-next-line
         if ($input->getOption('clear') !== false) {
-            exec('rm -rf ' . BASE_PATH . '/runtime/container');
+          exec('rm -rf ' . BASE_PATH . '/runtime/container');
         }
 
         $serverFactory = $this->container->get(ServerFactory::class)
