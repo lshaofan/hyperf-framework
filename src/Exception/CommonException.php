@@ -19,8 +19,8 @@ class CommonException extends ServerException
     {
         if (is_null($message)) {
             $message = ErrorCode::getMessage($code);
-            if (! $message && class_exists(\App\Constants\AppErrCode::class)) {
-                $message = \App\Constants\AppErrCode::getMessage($code);
+            if (! $message && class_exists(\Gb\App\Common\Constants\AppErrCode::class)) {
+                $message = \Gb\App\Common\Constants\AppErrCode::getMessage($code);
             }
         }
         parent::__construct($message, $code, $previous);

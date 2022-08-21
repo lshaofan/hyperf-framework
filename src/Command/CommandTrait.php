@@ -33,6 +33,14 @@ trait CommandTrait
             '模型文件夹路径, 该生成文件基于模型位置',
             'app/Model'
         );
+        
+        $this->addOption(
+            'namespace',
+            'ns',
+            InputOption::VALUE_OPTIONAL,
+            '命名空间',
+            'Gb\App'
+        );
 
         $this->addArgument('table', InputArgument::OPTIONAL, '表名称', false);
     }
@@ -40,7 +48,7 @@ trait CommandTrait
     /**
      * @param string $path 文件路径
      * @param string $content 文件内容
-     * @return int 返回字节
+     * @return null|int 返回字节
      */
     protected function touchFile(string $path, string $content = ''): ?int
     {

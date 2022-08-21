@@ -18,7 +18,7 @@ use Throwable;
 
 class ValidationExceptionHandler extends ExceptionHandler
 {
-    public function handle(Throwable $throwable, ResponseInterface $response)
+    public function handle(Throwable $throwable, ResponseInterface $response): ResponseInterface
     {
         $this->stopPropagation();
 
