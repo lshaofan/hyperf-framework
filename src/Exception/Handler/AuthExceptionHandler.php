@@ -10,6 +10,7 @@ declare(strict_types=1);
  */
 namespace Gb\Framework\Exception\Handler;
 
+use Gb\Framework\Action\Traits\ResponseTrait;
 use Gb\Framework\Constants\ErrorCode;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\ExceptionHandler\ExceptionHandler;
@@ -23,6 +24,7 @@ use Throwable;
 
 class AuthExceptionHandler extends ExceptionHandler
 {
+    use ResponseTrait;
     protected StdoutLoggerInterface $logger;
 
     public function __construct(StdoutLoggerInterface $logger)
@@ -42,9 +44,13 @@ class AuthExceptionHandler extends ExceptionHandler
         $falseMsg = ErrorCode::getMessage($code);
         $httpCode = ErrorCode::getHttpCode($code);
 
-        $data = responseDataFormat($code, $falseMsg);
-        $dataStream = new SwooleStream(json_encode($data, JSON_UNESCAPED_UNICODE));
-
+        # 格式化输出
+        $data = $this->formatData(null, $falseMsg, $code);
+        $data = json_encode($data, JSON_UNESCAPED_UNICODE);
+        if ($data === false) {
+            $data = '服务器内部错误';
+        }
+        $dataStream = new SwooleStream($data);
         # # 阻止异常冒泡
         $this->stopPropagation();
         return $response->withHeader('Server', 'Gb')

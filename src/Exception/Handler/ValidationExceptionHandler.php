@@ -10,6 +10,7 @@ declare(strict_types=1);
  */
 namespace Gb\Framework\Exception\Handler;
 
+use Gb\Framework\Action\Traits\ResponseTrait;
 use Gb\Framework\Constants\ErrorCode;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
@@ -18,6 +19,8 @@ use Throwable;
 
 class ValidationExceptionHandler extends ExceptionHandler
 {
+    use ResponseTrait;
+
     public function handle(Throwable $throwable, ResponseInterface $response): ResponseInterface
     {
         $this->stopPropagation();
@@ -25,10 +28,15 @@ class ValidationExceptionHandler extends ExceptionHandler
         /** @var \Hyperf\Validation\ValidationException $throwable */
         $falseMsg = $throwable->validator->errors()->first();
 
-        # # 格式化输出
-        $data = responseDataFormat(ErrorCode::INVALID_PARAMS, $falseMsg);
+        # 格式化输出
+        $code = ErrorCode::INVALID_PARAMS;
 
-        $dataStream = new SwooleStream(json_encode($data, JSON_UNESCAPED_UNICODE));
+        $data = $this->formatData(null, $falseMsg, $code);
+        $data = json_encode($data, JSON_UNESCAPED_UNICODE);
+        if ($data === false) {
+            $data = '服务器内部错误';
+        }
+        $dataStream = new SwooleStream($data);
 
         return $response->withAddedHeader('Content-Type', 'application/json;charset=utf-8')
             ->withStatus($throwable->status)

@@ -12,6 +12,7 @@ namespace Gb\Framework\Command;
 
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Command\Command as HyperfCommand;
+use Hyperf\Utils\CodeGen\Project;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -72,8 +73,13 @@ class ActionCommand extends HyperfCommand
      */
     protected function createActions(string $name, string $dirPath): void
     {
+        $project = new Project();
+        $class = $project->namespace($dirPath);
+
         $dirPath .= '/' . $name;
-        $nameSpace = ucfirst(str_replace('/', '\\', $dirPath));
+        # 将$name 中的 / 替换为 \
+        $nameSpace = $class . str_replace('/', '\\', $name);
+//        $nameSpace = ucfirst(str_replace('/', '\\', $dirPath));
         $lowerAction = lcfirst($name);
 
         $stub = file_get_contents(__DIR__ . '/stubs/Action.stub');

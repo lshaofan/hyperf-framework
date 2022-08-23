@@ -21,11 +21,10 @@ use Hyperf\HttpServer\Annotation\RequestMapping;
 #[Controller]
 class #ACTION# extends AbstractAction
 {
-    /**
-     * @RequestMapping(path="/#ROUTE#", methods="#METHOD#")
-     */
-    public function handle(): array
+
+    #[RequestMapping(path:"/#ROUTE#", methods:"#METHOD#")]
+    public function handle(): \Psr\Http\Message\ResponseInterface
     {
-        return ['#ACTION#'];
+        return $this->success(['#ACTION#']);
     }
 }

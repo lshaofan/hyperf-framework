@@ -34,95 +34,101 @@ class ErrorCode extends AbstractConstants
      * @Message("token失效")
      * @HttpCode("401")
      */
-    public const TOKEN_INVALID = 100001;
+    public const TOKEN_INVALID = 401001;
 
     /**
      * @Message("用户或密码错误")
      * @HttpCode("401")
      */
-    public const AUTH_LOGIN_FAILED = 100002;
+    public const AUTH_LOGIN_FAILED = 401002;
 
     /**
      * @Message("非法token")
      * @HttpCode("401")
      */
-    public const AUTH_TOKEN_INVALID = 100003;
+    public const AUTH_TOKEN_INVALID = 401003;
 
     /**
      * @Message("token过期")
      * @HttpCode("401")
      */
-    public const AUTH_SESSION_EXPIRED = 100004;
+    public const AUTH_SESSION_EXPIRED = 401004;
 
     /**
      * @Message("未认证,没有token")
      * @HttpCode("401")
      */
-    public const AUTH_UNAUTHORIZED = 100005;
+    public const AUTH_UNAUTHORIZED = 401005;
 
     /**
      * @Message("认证失败")
      * @HttpCode("401")
      */
-    public const AUTH_FAILED = 100006;
+    public const AUTH_FAILED = 401006;
+
+    /**
+     * @Message("用户信息异常")
+     * @HttpCode("401")
+     */
+    public const AUTH_USER_INVALID = 401007;
 
     /**
      * @Message("没有权限")
      * @HttpCode("403")
      */
-    public const ACCESS_DENIED = 100007;
+    public const ACCESS_DENIED = 403007;
 
     /**
      * @Message("拒绝客户端请求")
      * @HttpCode("403")
      */
-    public const ACCESS_REFUSE = 100008;
+    public const ACCESS_REFUSE = 403008;
 
     /**
      * @Message("禁止重复操作")
      * @HttpCode("403")
      */
-    public const NO_REPETITION_OPERATION = 100009;
+    public const NO_REPETITION_OPERATION = 403009;
 
     /**
      * @Message("客户端错误")
      * @HttpCode("400")
      */
-    public const BAD_REQUEST = 100010;
+    public const BAD_REQUEST = 400010;
 
     /**
      * @Message("非法的Content-Type头")
      * @HttpCode("401")
      */
-    public const INVALID_CONTENT_TYPE = 100011;
+    public const INVALID_CONTENT_TYPE = 401011;
 
     /**
      * @Message("资源未找到")
      * @HttpCode("404")
      */
-    public const URI_NOT_FOUND = 100012;
+    public const URI_NOT_FOUND = 404012;
 
     /**
      * @Message("非法的参数")
      * @HttpCode("422")
      */
-    public const INVALID_PARAMS = 100013;
+    public const INVALID_PARAMS = 422013;
 
     /**
      * @Message("服务器异常")
      * @HttpCode("500")
      */
-    public const SERVER_ERROR = 100014;
+    public const SERVER_ERROR = 500014;
 
     /**
      * @Message("服务器异常(third-party-api)")
      * @HttpCode("500")
      */
-    public const THIRD_API_ERROR = 100015;
+    public const THIRD_API_ERROR = 500015;
 
     /**
      * @Message("请求方法错误")
      * @HttpCode("405")
      */
-    public const INVALID_HTTP_METHOD = 100016;
+    public const INVALID_HTTP_METHOD = 405016;
 }

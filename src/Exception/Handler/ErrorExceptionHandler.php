@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Gb\Framework\Exception\Handler;
 
 use ErrorException;
+use Gb\Framework\Action\Traits\ResponseTrait;
 use Gb\Framework\Constants\ErrorCode;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\ExceptionHandler\ExceptionHandler;
@@ -19,6 +20,8 @@ use Throwable;
 
 class ErrorExceptionHandler extends ExceptionHandler
 {
+    use ResponseTrait;
+
     protected StdoutLoggerInterface $logger;
 
     public function __construct(StdoutLoggerInterface $logger)
@@ -37,9 +40,15 @@ class ErrorExceptionHandler extends ExceptionHandler
 
         # # 格式化输出
         $level = $throwable instanceof ErrorException ? 'error' : 'hard';
-        $data = responseDataFormat(ErrorCode::SERVER_ERROR, '后台服务异常.' . $level);
-        $dataStream = new SwooleStream(json_encode($data, JSON_UNESCAPED_UNICODE));
+        # 格式化输出
+        $code = ErrorCode::SERVER_ERROR;
 
+        $data = $this->formatData(null, '后台服务异常.' . $level, $code);
+        $data = json_encode($data, JSON_UNESCAPED_UNICODE);
+        if ($data === false) {
+            $data = '服务器内部错误';
+        }
+        $dataStream = new SwooleStream($data);
         # # 阻止异常冒泡
         $this->stopPropagation();
         return $response->withHeader('Server', 'Gb')

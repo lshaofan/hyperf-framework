@@ -10,11 +10,13 @@ declare(strict_types=1);
  */
 namespace Gb\Framework\Exception\Handler;
 
+use Gb\Framework\Action\Traits\ResponseTrait;
 use Gb\Framework\Constants\ErrorCode;
 use Gb\Framework\Exception\CommonException;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
+use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 /**
@@ -22,6 +24,8 @@ use Throwable;
  */
 class CommonExceptionHandler extends ExceptionHandler
 {
+    use ResponseTrait;
+
     protected StdoutLoggerInterface $logger;
 
     public function __construct(StdoutLoggerInterface $logger)
@@ -29,25 +33,28 @@ class CommonExceptionHandler extends ExceptionHandler
         $this->logger = $logger;
     }
 
-    /**
-     * @return mixed
-     */
-    public function handle(Throwable $throwable, \Psr\Http\Message\ResponseInterface $response)
+    public function handle(Throwable $throwable, ResponseInterface $response): ResponseInterface
     {
         # # 记录日志
         $this->logger->error(sprintf('%s[%s] in %s', $throwable->getMessage(), $throwable->getLine(), $throwable->getFile()));
         $this->logger->error($throwable->getTraceAsString());
 
         # # 格式化输出
-        $data = responseDataFormat($throwable->getCode(), $throwable->getMessage());
-        $httpCode = ErrorCode::getHttpCode($data['code']);
-        if (! $httpCode && class_exists(\App\Constants\AppErrCode::class)) {
-            $httpCode = \App\Constants\AppErrCode::getHttpCode($data['code']);
-        }
-        $dataStream = new SwooleStream(json_encode($data, JSON_UNESCAPED_UNICODE));
+        $code = $throwable->getCode();
+        $httpCode = ErrorCode::getHttpCode($code);
 
+        # 如果默认code不存在，则寻找业务自定义错误码
+        if (! $httpCode && class_exists(\Gb\App\Common\Constants\AppErrCode::class)) {
+            $httpCode = \Gb\App\Common\Constants\AppErrCode::getHttpCode($code);
+        }
+        $data = $this->formatData(null, $throwable->getMessage(), $code);
         # # 阻止异常冒泡
         $this->stopPropagation();
+        $data = json_encode($data, JSON_UNESCAPED_UNICODE);
+        if ($data === false) {
+            $data = '服务器内部错误';
+        }
+        $dataStream = new SwooleStream($data);
         return $response->withHeader('Server', 'Gb')
             ->withAddedHeader('Content-Type', 'application/json;charset=utf-8')
             ->withStatus($httpCode)

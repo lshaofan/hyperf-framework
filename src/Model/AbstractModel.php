@@ -123,14 +123,13 @@ class AbstractModel extends Model
     /**
      * @param array $where 查询条件
      * @param string[] $options 可选项 ['orderByRaw'=> 'id asc', 'skip' => 15, 'take' => 5]
-     * @return
      */
-    public function optionWhere(array $where, array $options = []): Builder
+    public function optionWhere(array $where, array $options = [])
     {
         /** @var Builder $model */
         $model = new static();
 
-        if (! empty($where) && is_array($where)) {
+        if (! empty($where)) {
             foreach ($where as $k => $v) {
                 # # 一维数组
                 if (! is_array($v)) {
@@ -141,7 +140,7 @@ class AbstractModel extends Model
                 # # 二维索引数组
                 if (is_numeric($k)) {
                     $v[1] = mb_strtoupper($v[1]);
-                    $boolean = isset($v[3]) ? $v[3] : 'and';
+                    $boolean = $v[3] ?? 'and';
                     if (in_array($v[1], ['=', '!=', '<', '<=', '>', '>=', 'LIKE', 'NOT LIKE'])) {
                         $model = $model->where($v[0], $v[1], $v[2], $boolean);
                     } elseif ($v[1] == 'IN') {

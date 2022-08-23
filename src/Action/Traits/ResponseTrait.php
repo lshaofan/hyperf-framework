@@ -169,9 +169,11 @@ trait ResponseTrait
     /**
      * Format return data structure.
      *
+     * @param array|null $data
      * @param $message
      * @param $code
      * @param null $errors
+     * @return array
      */
     protected function formatData(array|null $data, $message, &$code, $errors = null): array
     {
