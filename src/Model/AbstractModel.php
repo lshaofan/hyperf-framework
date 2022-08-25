@@ -181,11 +181,21 @@ class AbstractModel extends Model
         foreach ($value as $field => $fieldValue) {
             # # 转snake
             $isTransSnake && $field = Str::snake($field);
-            # # 过滤
-            if ($isColumnFilter && ! isset($tableColumns[$field])) {
-                continue;
+            # 过滤
+            # 如果$field 中存在 -> 符号 则取出前面的字段名
+            if (str_contains($field, '->')) {
+                $oldField = $field;
+                $field = explode('->', $field)[0];
+                if ($isColumnFilter && ! isset($tableColumns[$field])) {
+                    continue;
+                }
+                $formatValue[$oldField] = $fieldValue;
+            } else {
+                if ($isColumnFilter && ! isset($tableColumns[$field])) {
+                    continue;
+                }
+                $formatValue[$field] = $fieldValue;
             }
-            $formatValue[$field] = $fieldValue;
         }
         return $formatValue;
     }

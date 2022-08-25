@@ -24,18 +24,18 @@ class %CLASS% extends %INHERITANCE%
     protected ?string $table = '%TABLE%';
 
     /**
-     * The connection name for the model.
+     * 模型链接的数据库表名.
      */
     protected ?string $connection = '%CONNECTION%';
 
     /**
-     * The attributes that are mass assignable.
+     * 可批量分配的属性.
      * @var array<string>
      */
     protected array $fillable = [];
 
     /**
-     * The attributes that should be cast to native types.
+     * 属性类型的转换.
      * @var array<string,string>
      */
     protected array $casts = [];

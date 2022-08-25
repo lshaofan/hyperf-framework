@@ -87,7 +87,7 @@ $this->fail('失败',500,$errors); // 默认返回状态码500。
 -  参数一class名称，无需定义根命名空间会根据path自动匹配命名空间前缀
 -  参数二 --path 即生成Action的路径
 ```bash
-php bin/hyperf.php gbGen:action Admin/UserInfo --path=app/core/user/src/Action
+php bin/hyperf.php gbGen:action Backend/UserInfo --path=app/core/user/src/Action
 ```
 
 ### 生成文件结构
