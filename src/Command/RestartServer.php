@@ -70,7 +70,7 @@ class RestartServer extends Command
 
         // @phpstan-ignore-next-line
         if ($input->getOption('clear') !== false) {
-          exec('rm -rf ' . BASE_PATH . '/runtime/container');
+            exec('rm -rf ' . BASE_PATH . '/runtime/container');
         }
 
         $serverFactory = $this->container->get(ServerFactory::class)

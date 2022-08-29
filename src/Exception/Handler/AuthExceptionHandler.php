@@ -25,6 +25,7 @@ use Throwable;
 class AuthExceptionHandler extends ExceptionHandler
 {
     use ResponseTrait;
+
     protected StdoutLoggerInterface $logger;
 
     public function __construct(StdoutLoggerInterface $logger)

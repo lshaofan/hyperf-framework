@@ -66,7 +66,7 @@ trait ResponseTrait
         return $this->ok('', $code, $headers, $option);
     }
 
-    public function success(mixed $data = [], string $message = '', int $code = 200, array $headers = []): PsrResponseInterface
+    public function success(mixed $data = null, string $message = '', int $code = 200, array $headers = []): PsrResponseInterface
     {
         return $this->formatArrayResponse($data, $message, $code, $headers);
     }
@@ -122,11 +122,7 @@ trait ResponseTrait
     /**
      * Return an fail response.
      *
-     * @param string $message
-     * @param int $code
      * @param null|array $errors
-     * @param array $header
-     * @return PsrResponseInterface
      */
     public function fail(string $message = '', int $code = 500, array|null $errors = null, array $header = []): PsrResponseInterface
     {
@@ -144,7 +140,7 @@ trait ResponseTrait
     /**
      * Format normal array data.
      */
-    protected function formatArrayResponse(array $data, string $message = '', int $code = 200, array $headers = []): PsrResponseInterface
+    protected function formatArrayResponse(mixed $data, string $message = '', int $code = 200, array $headers = []): PsrResponseInterface
     {
         return $this->response($this->formatData($data, $message, $code), $code, $headers);
     }
@@ -169,13 +165,11 @@ trait ResponseTrait
     /**
      * Format return data structure.
      *
-     * @param array|null $data
      * @param $message
      * @param $code
      * @param null $errors
-     * @return array
      */
-    protected function formatData(array|null $data, $message, &$code, $errors = null): array
+    protected function formatData(mixed $data, $message, &$code, $errors = null): array
     {
         $originalCode = $code;
         $code = (int) substr(strval($code), 0, 3); // notice
@@ -186,13 +180,19 @@ trait ResponseTrait
         } else {
             $type = 'success';
         }
-        return $this->formatDataFields([
+        $res = [
             'type' => $type,
             'code' => $originalCode,
             'message' => $message,
-            'result' => $data ?: (object) $data,
-            'error' => $errors ?: (object) [],
-        ]);
+        ];
+        # 如果type==='success' 则删除error字段
+        if ($type === 'success') {
+            $res['result'] = $data ?: (object) $data;
+        } else {
+            $res['error'] = $errors ?: (object) [];
+        }
+
+        return $this->formatDataFields($res);
     }
 
     /**

@@ -23,7 +23,9 @@
     },
     "require": {
         "php": ">=8.1",
-        "ext-swoole": ">=4.5"
+        "ext-swoole": ">=4.5",
+        "gb-hyperf/casbin": "dev-main",
+        "gb-hyperf/api-doc": "0.0.1|dev-main"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",

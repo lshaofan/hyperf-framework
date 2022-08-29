@@ -56,7 +56,7 @@ class ContractCommand extends HyperfCommand
     protected function createInterface(array $models, string $modelPath, string $namespace): void
     {
 //        $interfaceSpace = ucfirst(str_replace(['/', 'Model'], ['\\', 'Contract'], $modelPath));
-        # 将命名空间 中Model 替换为 Contract 
+        # 将命名空间 中Model 替换为 Contract
         $interfaceSpace = str_replace('Model', 'Contract', $namespace);
         $interfacePath = str_replace('Model', 'Contract', $modelPath);
 

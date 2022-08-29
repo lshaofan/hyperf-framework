@@ -33,7 +33,7 @@ trait CommandTrait
             '模型文件夹路径, 该生成文件基于模型位置',
             'app/Model'
         );
-        
+
         $this->addOption(
             'namespace',
             'ns',

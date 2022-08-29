@@ -1,0 +1,12 @@
+<?php
+
+declare(strict_types=1);
+
+namespace %NAMESPACE%;
+
+use Gb\Framework\Response\BaseResponse;
+
+class %CLASS% extends BaseResponse
+{
+
+}
