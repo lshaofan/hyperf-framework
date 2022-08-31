@@ -8,6 +8,7 @@
         "framework"
     ],
     "description": "framework of gb-hyperf",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Gb\\Framework\\": "src/"
