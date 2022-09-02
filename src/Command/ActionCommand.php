@@ -87,10 +87,10 @@ class ActionCommand extends HyperfCommand
         $stubVars = [
             [$nameSpace, 'Index', $lowerAction . '/index', 'GET', '查询 - 列表'],
             [$nameSpace, 'Show', $lowerAction . '/show', 'GET', '查询 - 详情'],
-            [$nameSpace, 'Create', $lowerAction . '/create', 'GET',  '添加 - 页面'],
+            //            [$nameSpace, 'Create', $lowerAction . '/create', 'GET',  '添加 - 页面'],
             [$nameSpace, 'Store', $lowerAction . '/store', 'POST',  '添加 - 动作'],
-            [$nameSpace, 'Edit', $lowerAction . '/edit', 'GET',  '修改 - 页面'],
-            [$nameSpace, 'Update', $lowerAction . '/update', 'PUT',  '修改 - 页面'],
+            //            [$nameSpace, 'Edit', $lowerAction . '/edit', 'GET',  '修改 - 页面'],
+            [$nameSpace, 'Update', $lowerAction . '/update', 'PUT',  '修改 - 动作'],
             [$nameSpace, 'Destroy', $lowerAction . '/destroy', 'DELETE',  '删除 - 动作'],
         ];
         if (! is_string($stub)) {

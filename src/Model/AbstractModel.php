@@ -66,11 +66,13 @@ class AbstractModel extends Model
 
     /**
      * 添加单条
-     * @param array $data 添加的数据
+     * @param array<string,mixed> $data 添加的数据
      * @return int 自增ID
      */
     public function createOne(array $data): int
     {
+        $data['created_at'] = date('Y-m-d H:i:s');
+        $data['updated_at'] = date('Y-m-d H:i:s');
         $newData = $this->columnsFormat($data, true, true);
         return self::query()->insertGetId($newData);
     }

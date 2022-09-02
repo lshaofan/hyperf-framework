@@ -39,7 +39,7 @@ trait ResponseTrait
     /**
      * 使用创建的响应进行响应并关联位置（如果提供） 固定返回状态码201。
      */
-    public function created(?array $data = [], string $message = '', string $location = ''): PsrResponseInterface
+    public function created(?array $data = [], string $message = '创建成功', string $location = ''): PsrResponseInterface
     {
         $response = $this->success($data, $message, 201);
         if ($location) {
@@ -52,7 +52,7 @@ trait ResponseTrait
     /**
      * 成功方法的别名，无需指定数据参数。
      */
-    public function ok(string $message = '', int $code = 200, array $headers = []): PsrResponseInterface
+    public function ok(string $message = '操作成功', int $code = 200, array $headers = []): PsrResponseInterface
     {
         return $this->success([], $message, $code, $headers);
     }
@@ -122,9 +122,13 @@ trait ResponseTrait
     /**
      * Return an fail response.
      *
+     * @param string $message
+     * @param int $code
      * @param null|array $errors
+     * @param array $header
+     * @return PsrResponseInterface
      */
-    public function fail(string $message = '', int $code = 500, array|null $errors = null, array $header = []): PsrResponseInterface
+    public function fail(string $message = '操作失败', int $code = 500, array|null $errors = null, array $header = []): PsrResponseInterface
     {
         return $this->response(
             $this->formatData(null, $message, $code, $errors),
