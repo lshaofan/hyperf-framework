@@ -58,9 +58,9 @@ trait ValidateSceneTrait
      * 场景验证
      * @param array $inputs 验证参数
      * @param string $scene 场景
+     * @return array 验证参数
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @return array 验证参数
      */
     protected function validated(array $inputs, string $scene = ''): array
     {

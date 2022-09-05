@@ -8,6 +8,8 @@ declare(strict_types=1);
  * @document https://greenbirds.cn
  * @contact  liushaofan@greenbirds.cn
  */
+use Hyperf\Utils\ApplicationContext;
+
 if (! function_exists('readFileName')) {
     /**
      * 取出某目录下所有php文件的文件名.
@@ -31,7 +33,28 @@ if (! function_exists('readFileName')) {
         return $data;
     }
 }
-
+if (! function_exists('container')) {
+    /**
+     * 获取容器实例.
+     * @return \Psr\Container\ContainerInterface
+     */
+    function container(): Psr\Container\ContainerInterface
+    {
+        return ApplicationContext::getContainer();
+    }
+}
+if (! function_exists('redis')) {
+    /**
+     * 获取Redis实例.
+     * @return \Hyperf\Redis\Redis
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    function redis(): Hyperf\Redis\Redis
+    {
+        return container()->get(\Hyperf\Redis\Redis::class);
+    }
+}
 if (! function_exists('responseDataFormat')) {
     function responseDataFormat($code, string $message = '', array $data = []): array
     {

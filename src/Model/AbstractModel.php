@@ -44,7 +44,7 @@ class AbstractModel extends Model
 
     /**
      * 多条分页.
-     * @param array $where 查询条件
+     * @param array<int|string,mixed> $where 查询条件
      * @param array|string[] $columns 查询字段
      * @param array $options 可选项 ['orderByRaw'=> 'id asc', 'perPage' => 15, 'page' => null, 'pageName' => 'page']
      * @return array 分页结果 Hyperf\Paginator\Paginator::toArray

@@ -122,11 +122,7 @@ trait ResponseTrait
     /**
      * Return an fail response.
      *
-     * @param string $message
-     * @param int $code
      * @param null|array $errors
-     * @param array $header
-     * @return PsrResponseInterface
      */
     public function fail(string $message = '操作失败', int $code = 500, array|null $errors = null, array $header = []): PsrResponseInterface
     {
@@ -194,6 +190,10 @@ trait ResponseTrait
             $res['result'] = $data ?: (object) $data;
         } else {
             $res['error'] = $errors ?: (object) [];
+        }
+        # 如果code===201 则删除 result字段
+        if ($code === 201) {
+            unset($res['result']);
         }
 
         return $this->formatDataFields($res);
