@@ -37,7 +37,7 @@ class RestartServer extends Command
 
     protected function configure()
     {
-        $this->setDescription('Restart Gb servers.')
+        $this->setDescription('Restart 服务.')
             ->addOption('clear', 'c', InputOption::VALUE_OPTIONAL, 'clear runtime container', false);
     }
 
@@ -48,6 +48,7 @@ class RestartServer extends Command
         $io = new SymfonyStyle($input, $output);
         $pidFile = BASE_PATH . '/runtime/hyperf.pid';
         $pid = file_exists($pidFile) ? intval(file_get_contents($pidFile)) : false;
+        dump($pid);
         if (! $pid) {
             $io->note('Gb server pid is invalid.');
             return -1;
@@ -62,17 +63,14 @@ class RestartServer extends Command
             $io->error('Gb server stop error.');
             return -1;
         }
-
         // @phpstan-ignore-next-line
         while (Process::kill($pid, SIG_DFL)) {
             sleep(1);
         }
-
         // @phpstan-ignore-next-line
         if ($input->getOption('clear') !== false) {
             exec('rm -rf ' . BASE_PATH . '/runtime/container');
         }
-
         $serverFactory = $this->container->get(ServerFactory::class)
             ->setEventDispatcher($this->container->get(EventDispatcherInterface::class))
             ->setLogger($this->container->get(StdoutLoggerInterface::class));
@@ -87,7 +85,6 @@ class RestartServer extends Command
         $serverFactory->configure($serverConfig);
 
         Runtime::enableCoroutine(true, swoole_hook_flags());
-
         $serverFactory->start();
         return 0;
     }

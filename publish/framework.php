@@ -41,4 +41,7 @@ return [
             ],
         ],
     ],
+    'plugin' => [
+        'dir' => BASE_PATH . '/addons',
+    ],
 ];

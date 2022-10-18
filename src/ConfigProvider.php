@@ -10,11 +10,6 @@ declare(strict_types=1);
  */
 namespace Gb\Framework;
 
-use Gb\Framework\Command\HyperfReloadCommand;
-use Gb\Framework\Command\HyperfReStartCommand;
-use Gb\Framework\Command\HyperfServerStartCommand;
-use Gb\Framework\Command\HyperfServerStatusCommand;
-use Gb\Framework\Command\HyperfServerStopCommand;
 use Gb\Framework\Exception\Handler\AuthExceptionHandler;
 use Gb\Framework\Exception\Handler\CommonExceptionHandler;
 use Gb\Framework\Exception\Handler\GuzzleRequestExceptionHandler;
@@ -50,11 +45,7 @@ class ConfigProvider
                 ],
             ],
             'commands' => [
-                HyperfServerStartCommand::class,
-                HyperfReloadCommand::class,
-                HyperfReStartCommand::class,
-                HyperfServerStatusCommand::class,
-                HyperfServerStopCommand::class,
+
             ],
             'listeners' => [
                 \Hyperf\ExceptionHandler\Listener\ErrorExceptionHandler::class,

@@ -16,6 +16,7 @@ use Hyperf\Server\ServerFactory;
 use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Swoole\Coroutine\System;
 use Swoole\Process;
 use Swoole\Runtime;
 use Symfony\Component\Console\Command\Command;
@@ -107,6 +108,13 @@ class StartServer extends Command
 
     private function clearRuntimeContainer()
     {
+//        $shRes = System::exec('rm -rf ' . BASE_PATH . '/runtime/container');
+//        dump($shRes);
+//        if ($shRes['signal'] === false || $shRes['code'] !== 0) {
+//            $falseMsg = '缓存清理失败';
+//            isset($shRes['output']) && $falseMsg .= ':' . $shRes['output'];
+//            $this->io->error($falseMsg);
+//        }
         exec('rm -rf ' . BASE_PATH . '/runtime/container');
     }
 
@@ -142,10 +150,10 @@ class StartServer extends Command
                 $this->io->error('old Gb server stop error.');
                 exit;
             }
-
-            while (Process::kill($pid, SIG_DFL)) {
-                sleep(1);
-            }
+            sleep(1);
+//            while (Process::kill($pid, SIG_DFL)) {
+//                sleep(1);
+//            }
         }
     }
 }
