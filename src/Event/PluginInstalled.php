@@ -15,4 +15,5 @@ namespace Gb\Framework\Event;
  */
 class PluginInstalled extends PluginEvent
 {
+    
 }

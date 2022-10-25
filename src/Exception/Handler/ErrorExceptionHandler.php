@@ -16,6 +16,7 @@ use Gb\Framework\Constants\ErrorCode;
 use Hyperf\Contract\StdoutLoggerInterface;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
+use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
 class ErrorExceptionHandler extends ExceptionHandler
@@ -30,9 +31,11 @@ class ErrorExceptionHandler extends ExceptionHandler
     }
 
     /**
-     * @return mixed
+     * @param Throwable $throwable
+     * @param ResponseInterface $response
+     * @return ResponseInterface
      */
-    public function handle(Throwable $throwable, \Psr\Http\Message\ResponseInterface $response)
+    public function handle(Throwable $throwable, ResponseInterface $response): ResponseInterface
     {
         # # 记录日志
         $this->logger->error(sprintf('%s[%s] in %s', $throwable->getMessage(), $throwable->getLine(), $throwable->getFile()));

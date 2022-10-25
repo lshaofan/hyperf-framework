@@ -52,7 +52,6 @@ class AbstractModel extends Model
     public function getPageList(array $where, array $columns = ['*'], array $options = []): array
     {
         $model = $this->optionWhere($where, $options);
-
         # # 分页参数
         $perPage = isset($options['perPage']) ? (int) $options['perPage'] : 15;
         $pageName = $options['pageName'] ?? 'page';
@@ -130,7 +129,6 @@ class AbstractModel extends Model
     {
         /** @var Builder $model */
         $model = new static();
-
         if (! empty($where)) {
             foreach ($where as $k => $v) {
                 # # 一维数组

@@ -4,7 +4,54 @@ declare(strict_types=1);
 
 namespace %NAMESPACE%;
 
-class %CLASS% 
+use Hyperf\Validation\Request\FormRequest;
+use OpenApi\Attributes as OA;
+
+#[OA\RequestBody(
+    request: '%CLASS%Body',
+    description: 'description',
+    content: new OA\JsonContent(
+        ref: '#/components/schemas/%CLASS%Schemas',
+    )
+)]
+#[OA\Schema(
+    schema: '%CLASS%Schemas',
+    title: 'title',
+    description: 'description',
+    required: [],
+)]
+class %CLASS% extends FormRequest
 {
 
+
+    #[OA\Property(property: 'name', description: 'description', example: 'example')]
+    public string $name;
+
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     */
+    public function rules(): array
+    {
+        return [
+
+        ];
+    }
+
+    /**
+     * Get the validation messages that apply to the request.
+     */
+    public function messages(): array
+    {
+        return [
+
+        ];
+    }
 }

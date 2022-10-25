@@ -10,22 +10,19 @@ declare(strict_types=1);
  */
 namespace Gb\Framework\Command;
 
+use Gb\Framework\Event\PluginInstalled;
 use Hyperf\Command\Annotation\Command;
 use Hyperf\Command\Command as HyperfCommand;
-use MoChat\Framework\Event\PluginInstalled;
-use MoChat\Framework\Event\PluginUninstalled;
+use Hyperf\DbConnection\Db;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Swoole\Coroutine\System;
 use Symfony\Component\Console\Input\InputArgument;
 
-
 #[Command]
 class PluginCommand extends HyperfCommand
 {
-
     protected ContainerInterface $container;
-
 
     protected ?EventDispatcherInterface $eventDispatcher;
 
@@ -50,6 +47,11 @@ class PluginCommand extends HyperfCommand
     protected string|array|null $version;
 
     /**
+     * 插件的version信息.
+     */
+    protected array $pluginInfo;
+
+    /**
      * @var string 包归档文件.zip
      */
     private string $archiveFile;
@@ -64,10 +66,10 @@ class PluginCommand extends HyperfCommand
         $this->container = $container;
         $this->eventDispatcher = $container->get(EventDispatcherInterface::class);
         $pluginDir = config('framework.plugin.dir', BASE_PATH . '/addons');
-        $this->installDir = $pluginDir . '/vendor';
+        $this->installDir = $pluginDir;
         $this->archiveDir = $pluginDir . '/archive';
 
-        parent::__construct('gbPlugin');
+        parent::__construct('gb:plugin');
     }
 
     public function configure(): void
@@ -87,17 +89,18 @@ class PluginCommand extends HyperfCommand
         $this->archiveFile = $this->archiveDir . '/' . $this->package . '.zip';
         $this->pkgInstallDir = $this->installDir . '/' . $this->package;
 
+        dump($action, $this->package, $this->version, $this->archiveFile, $this->pkgInstallDir);
         switch ($action) {
             case 'install':
                 $this->install();
 //                $this->eventDispatcher->dispatch(new PluginInstalled([$this->package, $this->version]));
                 break;
             case 'remove':
-                $this->uninstall();
-//                $this->eventDispatcher->dispatch(new PluginUninstalled([$this->package, $this->version]));
+//                $this->uninstall();
+         //                $this->eventDispatcher->dispatch(new PluginUninstalled([$this->package, $this->version]));
                 break;
             case 'update':
-//                $this->update();
+         //                $this->update();
                 break;
             default:
                 $this->line('错误的执行动作,action:install/remove', 'warnning');
@@ -109,7 +112,7 @@ class PluginCommand extends HyperfCommand
      */
     protected function install(): void
     {
-        $this->line(sprintf('gb插件[%s:%s]开始安装', $this->package, $this->version), 'info');
+        $this->line(sprintf('插件[%s:%s]开始安装', $this->package, $this->version), 'info');
         # # 下载文件
         if (! $this->archiveDownload()) {
             return;
@@ -133,7 +136,7 @@ class PluginCommand extends HyperfCommand
      */
     protected function uninstall(): void
     {
-        $this->line(sprintf('MoChat插件[%s:%s]开始卸载', $this->package, $this->version), 'info');
+        $this->line(sprintf('插件[%s:%s]开始卸载', $this->package, $this->version), 'info');
         # # vendor链接删除
         if (! $this->composerUninstall()) {
             return;
@@ -150,15 +153,16 @@ class PluginCommand extends HyperfCommand
      */
     protected function staticPublish(): bool
     {
-        $publishSh = sprintf('php bin/hyperf.php vendor:publish %s', $this->package);
+        $publishSh = sprintf('php bin/hyperf.php vendor:publish %s -f', $this->pluginInfo['name']);
+
         $shRes = System::exec($publishSh);
         if ($shRes['signal'] === false || $shRes['code'] !== 0) {
-            $falseMsg = 'MoChat插件[静态资源]发布错误';
+            $falseMsg = '插件[静态资源]发布错误';
             isset($shRes['output']) && $falseMsg .= ':' . $shRes['output'];
             $this->line($shRes, 'error');
         }
 
-        $this->line('MoChat插件[静态资源]发布完成', 'info');
+        $this->line('[静态资源]发布完成', 'info');
         return true;
     }
 
@@ -178,7 +182,7 @@ class PluginCommand extends HyperfCommand
         $this->line('无本地归档插件，远程验证下载中...', 'info');
         $res = false;
         if ($res) {
-            $this->line('MoChat插件[归档]下载完成', 'info');
+            $this->line('gb插件[归档]下载完成', 'info');
         }
 
         $this->line('远程插件验证下载失败，请求检查验证key是否正确', 'error');
@@ -190,7 +194,8 @@ class PluginCommand extends HyperfCommand
      */
     protected function zipExtract(): bool
     {
-        if (file_exists($this->pkgInstallDir . '/composer.json')) {
+        if (file_exists($this->pkgInstallDir . '/composer.json')) {    # 删除归档文件
+//            $shRes = System::exec('rm -rf ' . $this->archiveFile);
             $this->line('gb插件[归档文件]已经解压', 'info');
             return true;
         }
@@ -209,6 +214,7 @@ class PluginCommand extends HyperfCommand
         }
 
         $zip->close();
+
         $this->line('gb插件[归档解压]完成', 'info');
         return true;
     }
@@ -217,22 +223,27 @@ class PluginCommand extends HyperfCommand
      * 添加composer.repositories配置 + 链接vendor等.
      */
     protected function composerInstall(): bool
-    {
+    {    # 获取取插件composer.json
+        $composerJson = $this->pkgInstallDir . '/composer.json';
+        if (! file_exists($composerJson)) {
+            $this->line('gb插件[composer.json]不存在', 'error');
+            return false;
+        }
+        $this->pluginInfo = json_decode(file_get_contents($composerJson), true);
         $repoSh = sprintf(
             'composer config repositories.%s path %s && composer require %s',
             $this->package,
             str_replace(BASE_PATH . '/', '', $this->pkgInstallDir),
-            $this->package
+            $this->pluginInfo['name']
         );
         $shRes = System::exec($repoSh);
         if ($shRes['signal'] === false || $shRes['code'] !== 0) {
-            $falseMsg = 'MoChat插件[composer链接]错误';
+            $falseMsg = '插件[composer链接]错误';
             isset($shRes['output']) && $falseMsg .= ':' . $shRes['output'];
             $this->line($shRes, 'error');
             return false;
         }
-
-        $this->line('MoChat插件[composer链接]完成', 'info');
+        $this->line('gb插件[composer链接]完成', 'info');
         return true;
     }
 
@@ -248,22 +259,28 @@ class PluginCommand extends HyperfCommand
         );
         $shRes = System::exec($repoSh);
         if ($shRes['signal'] === false || $shRes['code'] !== 0) {
-            $falseMsg = 'MoChat插件[composer.unlink]错误';
+            $falseMsg = 'gb插件[composer.unlink]错误';
             isset($shRes['output']) && $falseMsg .= ':' . $shRes['output'];
             $this->line($shRes, 'error');
             return false;
         }
 
-        $this->line('MoChat插件[composer.unlink]完成', 'info');
+        $this->line('gb插件[composer.unlink]完成', 'info');
         return true;
     }
 
     /**
-     * @deprecated 插件表数据添加(转到事件操作)
+     * 数据库相关操作.
      */
     protected function pluginDbInsert(): bool
     {
-//        $this->line('MoChat插件[表数据更新]完成', 'info');
+        # 获取插件version.json
+        $versionJson = $this->pkgInstallDir . '/version.json';
+        $versionJson = json_decode(file_get_contents($versionJson), true);
+        $versionJson['config'] = json_encode($versionJson['config']);
+        Db::table('plugin')->updateOrInsert(['identifier' => $versionJson['identifier'],
+        ], $versionJson);
+        $this->line('插件安装完成，新的插件版本将会在下次重启服务后生效，立即重启请执行: php bin/hyperf.php server:start -d', 'info');
         return true;
     }
 

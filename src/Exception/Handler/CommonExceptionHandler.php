@@ -47,6 +47,11 @@ class CommonExceptionHandler extends ExceptionHandler
         if (! $httpCode && class_exists(\Gb\App\Common\Constants\AppErrCode::class)) {
             $httpCode = \Gb\App\Common\Constants\AppErrCode::getHttpCode($code);
         }
+
+        # 如果业务自定义错误码不存在，则使用取默认code前三位
+        if (! $httpCode) {
+            $httpCode = (int) substr((string) $code, 0, 3);
+        }
         $data = $this->formatData(null, $throwable->getMessage(), $code);
         # # 阻止异常冒泡
         $this->stopPropagation();
